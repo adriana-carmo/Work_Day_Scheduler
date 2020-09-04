@@ -8,10 +8,10 @@ $("#currentDay").text(currentDate);
 var row = "";
 var periodTime = "";
 var formathour = "";
-arrayScheduleLS = [];
+var arrayScheduleLS = [];
 
 
-var schedule = {
+/*var schedule = {
     8 : "",
     9 : "",
     10 : "",
@@ -22,15 +22,29 @@ var schedule = {
     15 : "",
     16 : "",
     17 : ""
-}
+}*/
 
+var scheduleTime = [];
+
+/*var schedule = [
+    {8 : ""},
+    {9 : ""},
+    {10 : ""},
+    {11 : ""},
+    {12 : ""},
+    {13 : ""},
+    {14 : ""}
+]*/
 
 // Create time block for each hour from 9am to 5pm 
 function createLinesSchedule(){
+
+    var line = 0
+
     for ( var i = 8; i <= 17; i++ ) {
 
         /* Create lines*/
-        row = $("<div id=hour-" + i + ">");
+        row = $("<div id=" + line++ + ">");
         
         //Check the time to add CSS past / present / future
         addCssSlottime(i)
@@ -48,8 +62,7 @@ function createLinesSchedule(){
         
         var div2 = $("<textarea id=txt-" + i + ">");
         $( div2 ).addClass( "col-md-10 description" );
-        //$( div2 ).text(i + "Teste Adriana"); 
-
+      
         var div3 = $("<button id=" + i + ">");
         $( div3 ).addClass( "col-md-1 btn saveBtn" );
         $( div3 ).on( "click", save );
@@ -96,7 +109,7 @@ function formatHour(hour){
     else if (hour == 16){
         return "04" +  periodTime;
     }
-    else {
+    else if (hour == 17){
         return "05" +  periodTime;
     }
 }
@@ -104,34 +117,61 @@ function formatHour(hour){
         
 
 function save(event){
-    //debugger
-    //alert(event.target.parentElement.id);
-    //alert($("#txt-9").val());
-    //console.log(event.currentTarget);
-    // var txt = $("#txt-9").val(); 
-    // alert(txt); 
 
-    var line = event.target.id;
-    var hour = event.target.parentElement.id;
-    var task = $("#txt-" + line).val();
+    var line = event.target.parentElement.id;
+    var hour = event.target.id;
+    var task = $("#txt-" + hour).val();
 
+    // get task from localstorage or set to empty array
+   var arrayScheduleSave = localStorage.getItem("schedule");
 
+    if (arrayScheduleSave) {
+        scheduleTime = JSON.parse(arrayScheduleSave);
+
+        // loop the LocalStorage array
+        for (let x = 0; x < scheduleTime.length; x++) {
+         
+            if(scheduleTime[x][0] == hour){
+                
+                //delete to not duplicate task 
+                scheduleTime.splice(x, 1);
+
+            }
+
+        }
+    }
+
+    scheduleTime.push([hour,task])
+   
+    // set the item in localStorage
+    localStorage.setItem("schedule", JSON.stringify(scheduleTime));
+    
+/*
     // format new task object for schedule
     schedule[line] = task;
    
     // set the item in localStorage
-    localStorage.setItem('schedule', JSON.stringify(schedule));
-      
-
-    // either get scores from localstorage or set to empty array
-    var arraySchedule = localStorage.getItem("schedule");
-
-    if (arraySchedule) {
-        arrayScheduleLS = JSON.parse(arraySchedule);
-    }
-
-    console.log(arrayScheduleLS)
+    localStorage.setItem("schedule", JSON.stringify(schedule));
+*/
+  
 }
 
+//Create line Hour / Task / Save Button
 createLinesSchedule();
+
+//Check the document is ready to get calendar content
+$(document).ready(function(){
+     // get task from localstorage or set to empty array
+     var arraySchedule = localStorage.getItem("schedule");
+
+     if (arraySchedule) {
+         arrayScheduleLS = JSON.parse(arraySchedule);
+
+         for ( var i = 0; i < arrayScheduleLS.length; i++ ) {
+            
+            // get the calendar content of the array
+            $("#txt-".concat(arrayScheduleLS[i][0].toString())).text(arrayScheduleLS[i][1].toString());
+         }
+     }
+  });
     
