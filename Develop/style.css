@@ -61,6 +61,9 @@ textarea{
   border-left: 1px solid black;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
+  background-image: url("save-icon.png");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
   background-color: #06AED5;
   color: white;
 }
