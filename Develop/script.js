@@ -1,40 +1,13 @@
-var currentDate = moment().format();
+var currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+var weekDay = moment().format('dddd');
 
-$("#currentDay").text(currentDate);
+$("#currentDay").text(weekDay + " - " + currentDate);
 
-
-//var a = moment(currentDate, "HH");
-//console.log(a);
 var row = "";
 var periodTime = "";
 var formathour = "";
 var arrayScheduleLS = [];
-
-
-/*var schedule = {
-    8 : "",
-    9 : "",
-    10 : "",
-    11 : "",
-    12 : "",
-    13 : "",
-    14 : "",
-    15 : "",
-    16 : "",
-    17 : ""
-}*/
-
 var scheduleTime = [];
-
-/*var schedule = [
-    {8 : ""},
-    {9 : ""},
-    {10 : ""},
-    {11 : ""},
-    {12 : ""},
-    {13 : ""},
-    {14 : ""}
-]*/
 
 // Create time block for each hour from 9am to 5pm 
 function createLinesSchedule(){
@@ -65,6 +38,7 @@ function createLinesSchedule(){
       
         var div3 = $("<button id=" + i + ">");
         $( div3 ).addClass( "col-md-1 btn saveBtn" );
+        $( div3 ).attr( "title", "Save task" );
         $( div3 ).on( "click", save );
        
         $( row ).append(( $( div1 ) )).append(( $( div2 ) )).append(( $( div3 ) ))
@@ -118,7 +92,6 @@ function formatHour(hour){
 
 function save(event){
 
-    var line = event.target.parentElement.id;
     var hour = event.target.id;
     var task = $("#txt-" + hour).val();
 
@@ -145,15 +118,6 @@ function save(event){
    
     // set the item in localStorage
     localStorage.setItem("schedule", JSON.stringify(scheduleTime));
-    
-/*
-    // format new task object for schedule
-    schedule[line] = task;
-   
-    // set the item in localStorage
-    localStorage.setItem("schedule", JSON.stringify(schedule));
-*/
-  
 }
 
 //Create line Hour / Task / Save Button
@@ -161,17 +125,17 @@ createLinesSchedule();
 
 //Check the document is ready to get calendar content
 $(document).ready(function(){
-     // get task from localstorage or set to empty array
-     var arraySchedule = localStorage.getItem("schedule");
+    // get task from localstorage or set to empty array
+    var arraySchedule = localStorage.getItem("schedule");
 
-     if (arraySchedule) {
-         arrayScheduleLS = JSON.parse(arraySchedule);
+    if (arraySchedule) {
+        arrayScheduleLS = JSON.parse(arraySchedule);
 
-         for ( var i = 0; i < arrayScheduleLS.length; i++ ) {
-            
-            // get the calendar content of the array
-            $("#txt-".concat(arrayScheduleLS[i][0].toString())).text(arrayScheduleLS[i][1].toString());
-         }
-     }
-  });
+        for ( var i = 0; i < arrayScheduleLS.length; i++ ) {
+        
+        // set the calendar content from array
+        $("#txt-".concat(arrayScheduleLS[i][0].toString())).text(arrayScheduleLS[i][1].toString());
+        }
+    }
+});
     
