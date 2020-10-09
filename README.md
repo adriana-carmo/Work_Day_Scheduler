@@ -1,4 +1,4 @@
-# bootcamp-hw-05
+# WorkDay Schedule
 Developed a simple calendar application that allows the user to save events for each hour of the day. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
 
 TO set the hour in page head I used the [Moment.js](https://momentjs.com/) library to work with date and time. 
@@ -37,6 +37,11 @@ WHEN I refresh the page
 THEN the saved events persist
 ```
 
+
+## 📝 License
+
+Copyright © 2020 [Adriana](https://github.com/adriana-carmo).<br />
+[WorkDay Homepage](https://adriana-carmo.github.io/Work_Day_Scheduler/)
 
 
 - - -
